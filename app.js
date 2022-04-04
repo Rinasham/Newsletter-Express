@@ -1,7 +1,14 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const https = require('https')
+require('dotenv').config();
+
+
 const app = express()
+
+
+const key = process.env.API_KEY_FOR_NEWSLETTER
+
 
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({extended:true}))
@@ -34,7 +41,7 @@ app.post('/', function(req, res){
   const url = `https://us14.api.mailchimp.com/3.0/lists/7723c40f46`
   const options = {
     method: 'POST',
-    auth: 'rina:eb4ebd9a151badfb965c21cf6ddc462c-us14'
+    auth: `rina:${key}`
   }
 
   const request = https.request(url, options, function(response){
@@ -63,15 +70,11 @@ app.post('/', function(req, res){
 app.post('/failure', (req,res)=>{
   res.redirect('/')
 })
-// API key
-// const key = 'eb4ebd9a151badfb965c21cf6ddc462c-us14'
 
-//audience ID
-// '7723c40f46'
 
 
 
 
 app.listen(3000, function(){
-  console.log('server is running on port 3000.');
+  console.log('server is running on port 3000');
 })
